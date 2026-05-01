@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CASE Tier Check</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300..700&display=swap" rel="stylesheet">
+<style>
+:root,[data-theme="light"]{
+  --bg:#f6f4ef;--surface:#f9f8f4;--surface2:#fdfcfb;--offset:#eeece6;
+  --border:#d8d5ce;--divider:#e2dfd8;
+  --text:#2a261e;--muted:#7a7870;--faint:#b5b3ad;--inverse:#f8f7f3;
+  --primary:#3d6b5e;--primary-h:#2b5247;--primary-hl:#d1ddd9;
+  --accent:#8a5c38;--accent-hl:#e8d9cd;
+  --t1:#c8dbd6;--t2:#ddd5c8;--t3:#d0c8dd;--t4:#ddc8c8;
+  --t1b:#4a9e8c;--t2b:#b08560;--t3b:#8070aa;--t4b:#aa6060;
+  --shadow-sm:0 1px 3px oklch(0.2 0.01 80/.07);
+  --shadow-md:0 4px 14px oklch(0.2 0.01 80/.09);
+  --shadow-lg:0 12px 36px oklch(0.2 0.01 80/.13);
+  --tx:180ms cubic-bezier(0.16,1,0.3,1);
+  --fd:'DM Serif Display',Georgia,serif;
+  --fb:'DM Sans',system-ui,sans-serif;
+  --xs:clamp(.75rem,.7rem+.25vw,.875rem);
+  --sm:clamp(.875rem,.8rem+.35vw,1rem);
+  --base:clamp(1rem,.95rem+.25vw,1.125rem);
+  --lg:clamp(1.125rem,1rem+.75vw,1.5rem);
+  --xl:clamp(1.5rem,1.2rem+1.25vw,2.25rem);
+  --2xl:clamp(2rem,1.2rem+2.5vw,3.25rem);
+  --r-sm:.375rem;--r-md:.5rem;--r-lg:.875rem;--r-xl:1.25rem;--r-full:9999px;
+}
+[data-theme="dark"]{
+  --bg:#181714;--surface:#1e1c1a;--surface2:#232120;--offset:#28261f;
+  --border:#3a3835;--divider:#2e2c28;
+  --text:#cccac6;--muted:#7a7874;--faint:#504e4a;--inverse:#2a261e;
+  --primary:#5da08f;--primary-h:#3e7f70;--primary-hl:#243530;
+  --t1:#243530;--t2:#322c22;--t3:#2a2535;--t4:#352525;
+  --shadow-sm:0 1px 3px oklch(0 0 0/.2);
+  --shadow-md:0 4px 14px oklch(0 0 0/.3);
+  --shadow-lg:0 12px 36px oklch(0 0 0/.4);
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme]){--bg:#181714;--surface:#1e1c1a;--surface2:#232120;--offset:#28261f;--border:#3a3835;--divider:#2e2c28;--text:#cccac6;--muted:#7a7874;--faint:#504e4a;--primary:#5da08f;--primary-h:#3e7f70;--primary-hl:#243530;}}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth;scroll-padding-top:2rem;}
+body{min-height:100dvh;font-family:var(--fb);font-size:var(--base);color:var(--text);background:var(--bg);line-height:1.6;}
+img{display:block;max-width:100%;}
+button{cursor:pointer;background:none;border:none;font:inherit;color:inherit;}
+p{text-wrap:pretty;}
+h1,h2,h3,h4{text-wrap:balance;line-height:1.2;}
+a,button{transition:color var(--tx),background var(--tx),border-color var(--tx),box-shadow var(--tx),opacity var(--tx);}
+:focus-visible{outline:2px solid var(--primary);outline-offset:3px;border-radius:var(--r-sm);}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+
+.wrap{max-width:860px;margin-inline:auto;padding-inline:clamp(1rem,4vw,2rem);}
+.wrap--n{max-width:660px;margin-inline:auto;padding-inline:clamp(1rem,4vw,2rem);}
+
+/* HEADER */
+.hd{position:sticky;top:0;z-index:100;background:color-mix(in oklch,var(--bg) 82%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--divider);padding:.7rem 0;}
+.hd-in{display:flex;align-items:center;justify-content:space-between;gap:1rem;}
+.logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;color:var(--text);}
+.logo-txt{font-family:var(--fd);font-size:var(--lg);line-height:1;}
+.logo-sub{font-size:var(--xs);color:var(--muted);font-weight:400;display:block;}
+.tgl{width:36px;height:36px;border-radius:var(--r-full);display:grid;place-items:center;border:1px solid var(--border);background:var(--surface);color:var(--muted);}
+.tgl:hover{color:var(--text);border-color:var(--muted);}
+
+/* HERO */
+.hero{padding:clamp(2.5rem,7vw,4.5rem) 0 clamp(1.5rem,4vw,3rem);}
+.badge{display:inline-flex;align-items:center;gap:.35rem;padding:.22rem .7rem;border-radius:var(--r-full);background:var(--primary-hl);color:var(--primary);font-size:var(--xs);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:1.1rem;}
+.hero h1{font-family:var(--fd);font-size:var(--2xl);color:var(--text);margin-bottom:.9rem;max-width:18ch;}
+.hero h1 em{font-style:italic;color:var(--primary);}
+.hero-lead{font-size:var(--lg);color:var(--muted);max-width:52ch;margin-bottom:1.75rem;}
+.tabs{display:flex;gap:.45rem;flex-wrap:wrap;}
+.tab{padding:.55rem 1.2rem;border-radius:var(--r-full);border:1.5px solid var(--border);background:var(--surface);font-size:var(--sm);font-weight:500;color:var(--muted);}
+.tab.on{background:var(--primary);color:var(--inverse);border-color:var(--primary);}
+.tab:hover:not(.on){border-color:var(--muted);color:var(--text);}
+
+/* PANELS */
+.pnl{display:none;animation:fi .28s ease;}
+.pnl.on{display:block;}
+@keyframes fi{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+
+.sec-lbl{font-size:var(--xs);font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);margin-bottom:.45rem;}
+
+/* TIER CARDS */
+.tv-title{font-family:var(--fd);font-size:var(--xl);margin-bottom:.4rem;}
+.tv-lead{color:var(--muted);font-size:var(--sm);max-width:52ch;margin-bottom:1.75rem;}
+.tier-stack{display:flex;flex-direction:column;gap:.6rem;}
+.tc{border-radius:var(--r-lg);padding:1.2rem 1.4rem;cursor:pointer;border:1.5px solid transparent;transition:box-shadow var(--tx),border-color var(--tx),transform var(--tx);position:relative;overflow:hidden;}
+.tc::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:var(--r-sm) 0 0 var(--r-sm);}
+.tc:hover{box-shadow:var(--shadow-md);transform:translateX(3px);}
+.tc.ex{border-color:var(--border);box-shadow:var(--shadow-md);}
+.t1{background:var(--t1);}.t1::before{background:var(--t1b);}
+.t2{background:var(--t2);}.t2::before{background:var(--t2b);}
+.t3{background:var(--t3);}.t3::before{background:var(--t3b);}
+.t4{background:var(--t4);}.t4::before{background:var(--t4b);}
+.tc-hd{display:flex;align-items:center;justify-content:space-between;gap:1rem;}
+.tc-lbl{font-size:var(--xs);font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:.15rem;}
+.tc-name{font-family:var(--fd);font-size:var(--lg);color:var(--text);}
+.tc-arr{width:26px;height:26px;border-radius:var(--r-full);background:color-mix(in oklch,var(--text) 10%,transparent);display:grid;place-items:center;flex-shrink:0;transition:transform var(--tx);}
+.tc.ex .tc-arr{transform:rotate(180deg);}
+.tc-body{display:none;margin-top:.9rem;padding-top:.9rem;border-top:1px solid color-mix(in oklch,var(--text) 12%,transparent);}
+.tc.ex .tc-body{display:block;}
+.tc-body p{font-size:var(--sm);color:var(--muted);margin-bottom:.65rem;max-width:56ch;}
+.tc-body p:last-of-type{margin-bottom:0;}
+.tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.65rem;}
+.tag{padding:.18rem .6rem;border-radius:var(--r-full);font-size:var(--xs);font-weight:500;background:color-mix(in oklch,var(--text) 8%,transparent);color:var(--muted);}
+.comm-note{margin-top:1.75rem;padding:1.2rem 1.4rem;background:var(--surface);border-radius:var(--r-lg);border:1px solid var(--border);}
+.comm-note-lbl{font-size:var(--xs);font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--primary);margin-bottom:.45rem;}
+.comm-note p{font-size:var(--sm);color:var(--muted);max-width:56ch;}
+.comm-note p+p{margin-top:.45rem;}
+
+/* PRACTITIONER TOOL */
+.pt-title{font-family:var(--fd);font-size:var(--xl);margin-bottom:.4rem;}
+.pt-lead{color:var(--muted);font-size:var(--sm);max-width:52ch;margin-bottom:1.75rem;}
+.steps{display:flex;flex-direction:column;gap:1.1rem;}
+.sc{background:var(--surface);border-radius:var(--r-xl);border:1.5px solid var(--border);padding:1.4rem;box-shadow:var(--shadow-sm);}
+.snum{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:var(--r-full);background:var(--primary);color:var(--inverse);font-size:var(--xs);font-weight:700;margin-bottom:.8rem;flex-shrink:0;}
+.stitle{font-size:var(--base);font-weight:600;margin-bottom:.2rem;}
+.shint{font-size:var(--sm);color:var(--muted);margin-bottom:.9rem;max-width:50ch;}
+.finput,.fta{width:100%;padding:.7rem .95rem;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r-md);font:inherit;font-size:var(--sm);color:var(--text);transition:border-color var(--tx),box-shadow var(--tx);resize:vertical;}
+.finput:focus,.fta:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px color-mix(in oklch,var(--primary) 18%,transparent);}
+.fta{min-height:78px;}
+.tier-sel{display:grid;grid-template-columns:repeat(2,1fr);gap:.55rem;margin-top:.2rem;}
+@media(max-width:480px){.tier-sel{grid-template-columns:1fr;}}
+.to{padding:.7rem .95rem;border-radius:var(--r-lg);border:1.5px solid var(--border);background:var(--offset);font-size:var(--sm);font-weight:500;text-align:left;cursor:pointer;}
+.to:hover{border-color:var(--muted);}
+.to.on{border-color:var(--primary);background:var(--primary-hl);}
+.to-t{font-weight:600;display:block;margin-bottom:.1rem;}
+.to-d{font-size:var(--xs);color:var(--muted);display:block;}
+.levers{display:flex;flex-direction:column;gap:.5rem;margin-top:.45rem;}
+.lv{display:flex;align-items:flex-start;gap:.6rem;}
+.lchk{width:20px;height:20px;border-radius:.25rem;border:1.5px solid var(--border);background:var(--bg);flex-shrink:0;cursor:pointer;display:grid;place-items:center;transition:background var(--tx),border-color var(--tx);margin-top:2px;}
+.lchk.on{background:var(--primary);border-color:var(--primary);}
+.lchk.on::after{content:'';display:block;width:10px;height:6px;border-left:2px solid white;border-bottom:2px solid white;transform:rotate(-45deg) translateY(-1px);}
+.llbl{font-size:var(--sm);color:var(--text);line-height:1.4;}
+.gbtn{width:100%;padding:.82rem 1.4rem;background:var(--primary);color:var(--inverse);border-radius:var(--r-full);font-size:var(--sm);font-weight:600;margin-top:.45rem;box-shadow:var(--shadow-sm);}
+.gbtn:hover{background:var(--primary-h);box-shadow:var(--shadow-md);}
+.gbtn:active{transform:scale(.98);}
+.rbtn{width:100%;padding:.7rem 1.4rem;border:1.5px solid var(--border);border-radius:var(--r-full);font-size:var(--sm);font-weight:500;margin-top:.45rem;color:var(--muted);}
+.rbtn:hover{border-color:var(--muted);color:var(--text);}
+
+/* OUTPUT */
+.out{display:none;margin-top:1.75rem;background:var(--surface);border-radius:var(--r-xl);border:1.5px solid var(--border);padding:clamp(1.4rem,4vw,2rem);box-shadow:var(--shadow-lg);animation:fi .35s ease;}
+.out.on{display:block;}
+.out-lbl{font-size:var(--xs);font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--primary);margin-bottom:1.4rem;display:flex;align-items:center;gap:.5rem;}
+.out-lbl::after{content:'';flex:1;height:1px;background:var(--divider);}
+.os{margin-bottom:1.4rem;}
+.os:last-of-type{margin-bottom:0;}
+.os-t{font-size:var(--xs);font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--faint);margin-bottom:.45rem;}
+.os-c{font-size:var(--sm);color:var(--text);line-height:1.7;}
+.otag{display:inline-block;padding:.22rem .7rem;border-radius:var(--r-full);font-size:var(--xs);font-weight:600;background:var(--primary-hl);color:var(--primary);margin-bottom:.45rem;}
+.oli{list-style:none;display:flex;flex-direction:column;gap:.35rem;}
+.oli li{display:flex;align-items:flex-start;gap:.45rem;font-size:var(--sm);color:var(--muted);line-height:1.5;}
+.oli li::before{content:'→';color:var(--primary);flex-shrink:0;font-weight:600;}
+.oq{margin-top:1.4rem;padding:1.1rem 1.3rem;background:var(--primary-hl);border-radius:var(--r-lg);border-left:3px solid var(--primary);}
+.oq-l{font-size:var(--xs);font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--primary);margin-bottom:.35rem;}
+.oq p{font-size:var(--sm);color:var(--text);font-style:italic;line-height:1.6;}
+.cpbtn{margin-top:1.1rem;padding:.58rem 1.1rem;border-radius:var(--r-full);border:1.5px solid var(--border);font-size:var(--xs);font-weight:600;color:var(--muted);display:inline-flex;align-items:center;gap:.35rem;}
+.cpbtn:hover{border-color:var(--muted);color:var(--text);}
+
+/* ABOUT */
+.about{margin:2.5rem 0;padding:1.4rem;background:var(--offset);border-radius:var(--r-xl);border:1px solid var(--divider);display:flex;gap:.9rem;align-items:flex-start;}
+.about-ico{flex-shrink:0;margin-top:3px;color:var(--primary);}
+.about h3{font-size:var(--base);font-weight:600;margin-bottom:.2rem;}
+.about p{font-size:var(--sm);color:var(--muted);max-width:52ch;}
+
+/* FOOTER */
+.ft{padding:2rem 0;border-top:1px solid var(--divider);margin-top:3rem;}
+.ft-in{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+.ft p{font-size:var(--xs);color:var(--faint);}
+.ft strong{color:var(--muted);}
+</style>
+</head>
+<body>
+
+<header class="hd">
+  <div class="wrap">
+    <div class="hd-in">
+      <a href="#" class="logo">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" aria-hidden="true">
+          <rect width="30" height="30" rx="7" fill="var(--primary)" opacity=".15"/>
+          <circle cx="15" cy="8" r="3" fill="var(--primary)"/>
+          <circle cx="15" cy="15" r="2.4" fill="var(--primary)" opacity=".65"/>
+          <circle cx="15" cy="22" r="1.8" fill="var(--primary)" opacity=".35"/>
+          <line x1="15" y1="11" x2="15" y2="12.6" stroke="var(--primary)" stroke-width="1.4" stroke-linecap="round"/>
+          <line x1="15" y1="17.4" x2="15" y2="20.2" stroke="var(--primary)" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+        <span>
+          <span class="logo-txt">CASE Tier Check</span>
+          <span class="logo-sub">Critical Agency &amp; Script Ecology</span>
+        </span>
+      </a>
+      <button class="tgl" data-tgl aria-label="Switch to dark mode"></button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap--n">
+      <div class="badge">
+        <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
+        CASE v0.2 &middot; Tier Mismatch Tool
+      </div>
+      <h1>Where is this <em>really</em> coming from?</h1>
+      <p class="hero-lead">A quick tool for practitioners and community members to locate where pressure is being produced — before deciding what to do about it.</p>
+      <div class="tabs" role="tablist">
+        <button class="tab on" role="tab" data-pnl="comm" aria-selected="true">For community members</button>
+        <button class="tab" role="tab" data-pnl="prac" aria-selected="false">For practitioners</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMUNITY -->
+  <div class="pnl on wrap--n" id="pnl-comm">
+    <div style="margin:1.75rem 0 3rem;">
+      <p class="sec-lbl">Understanding the system</p>
+      <h2 class="tv-title">Decisions happen at different levels.</h2>
+      <p class="tv-lead">When something is not working, it helps to know which level it is coming from. Tap each level to learn more.</p>
+      <div class="tier-stack">
+
+        <div class="tc t1" data-tc>
+          <div class="tc-hd">
+            <div><p class="tc-lbl">Micro — practitioner / client level</p><h3 class="tc-name">You &amp; your worker</h3></div>
+            <div class="tc-arr" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+          </div>
+          <div class="tc-body">
+            <p>This is the conversation between you and the person supporting you. Your worker genuinely wants to help — and this is the level they can act on directly.</p>
+            <p>If something is not working here, your worker can usually change it. This is where your voice has the most direct effect.</p>
+            <div class="tags"><span class="tag">How you are supported</span><span class="tag">What happens in sessions</span><span class="tag">How often you connect</span><span class="tag">What goals you work toward</span></div>
+          </div>
+        </div>
+
+        <div class="tc t2" data-tc>
+          <div class="tc-hd">
+            <div><p class="tc-lbl">Meso — organisation / service level</p><h3 class="tc-name">The organisation &amp; service</h3></div>
+            <div class="tc-arr" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+          </div>
+          <div class="tc-body">
+            <p>This is the service or organisation your worker is part of. They set rules about how services are delivered, who qualifies, and how much time workers have.</p>
+            <p>Your worker does not always control these rules — but the organisation can change them, especially when communities speak up consistently over time.</p>
+            <div class="tags"><span class="tag">Eligibility criteria</span><span class="tag">Wait times</span><span class="tag">What services are offered</span><span class="tag">How feedback is handled</span></div>
+          </div>
+        </div>
+
+        <div class="tc t3" data-tc>
+          <div class="tc-hd">
+            <div><p class="tc-lbl">Meso / Macro boundary — funding / contract level</p><h3 class="tc-name">Funding &amp; contracts</h3></div>
+            <div class="tc-arr" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+          </div>
+          <div class="tc-body">
+            <p>Services are paid for through funding contracts. These contracts decide what services can be offered, to whom, and for how long. When funding ends or changes direction, services can disappear even when the community still needs them.</p>
+            <p>Neither your worker nor the organisation always controls this. Community feedback and documented need can influence future funding decisions, even if it takes time.</p>
+            <div class="tags"><span class="tag">Program duration</span><span class="tag">Who is eligible</span><span class="tag">When a service gets cut</span><span class="tag">What gets measured</span></div>
+          </div>
+        </div>
+
+        <div class="tc t4" data-tc>
+          <div class="tc-hd">
+            <div><p class="tc-lbl">Macro — policy / legislation level</p><h3 class="tc-name">Policy &amp; legislation</h3></div>
+            <div class="tc-arr" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+          </div>
+          <div class="tc-body">
+            <p>Laws and policies set the rules that every level below must follow. Even when a worker, service, and funder all agree something is needed, policy can make it impossible to deliver — and the people at those levels are often frustrated by that too.</p>
+            <p>This is the hardest level to change. But your stories are part of what builds the evidence that shifts policy over time. That matters even when the change feels slow.</p>
+            <div class="tags"><span class="tag">Housing legislation</span><span class="tag">Child protection law</span><span class="tag">Immigration rules</span><span class="tag">Income support conditions</span></div>
+          </div>
+        </div>
+
+      </div>
+      <div class="comm-note">
+        <p class="comm-note-lbl">What this means for you</p>
+        <p>When a service cannot help you with something, it does not always mean they do not care or are not trying. Often the limit sits at Level 3 or 4 — above them, and above your worker too.</p>
+        <p>Knowing which level a problem is coming from helps you know where to direct your energy, and helps your community worker be honest with you about what they can actually change.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRACTITIONER -->
+  <div class="pnl wrap--n" id="pnl-prac">
+    <div style="margin:1.75rem 0 3rem;">
+      <p class="sec-lbl">Practitioner tool</p>
+      <h2 class="pt-title">Tier Check — before the conversation</h2>
+      <p class="pt-lead">Use this before supervision, a team debrief, or a community engagement to locate where a pressure is being produced. Takes about two minutes.</p>
+
+      <div class="steps">
+        <div class="sc">
+          <div class="snum">1</div>
+          <p class="stitle">Name the situation</p>
+          <p class="shint">In a sentence or two, describe what is feeling stuck, heavy, or unclear. Just enough to anchor the check.</p>
+          <textarea class="fta" id="sit" placeholder="e.g. A family I am working with keeps hitting the same waitlist barriers and I am spending most sessions just navigating referrals..." rows="3"></textarea>
+        </div>
+
+        <div class="sc">
+          <div class="snum">2</div>
+          <p class="stitle">Where is it being produced?</p>
+          <p class="shint">Where is this pressure most likely being generated? Select the most accurate level.</p>
+          <div class="tier-sel" role="group">
+            <button class="to" data-ts="1"><span class="to-t">Practitioner / client level</span><span class="to-d">Skill, relationship, individual circumstance</span></button>
+            <button class="to" data-ts="2"><span class="to-t">Organisation / service level</span><span class="to-d">Team capacity, internal process, culture</span></button>
+            <button class="to" data-ts="3"><span class="to-t">Funding / contract level</span><span class="to-d">What can be funded, eligibility, program design</span></button>
+            <button class="to" data-ts="4"><span class="to-t">Policy / legislation level</span><span class="to-d">Legal frameworks, government policy, systems design</span></button>
+          </div>
+        </div>
+
+        <div class="sc">
+          <div class="snum">3</div>
+          <p class="stitle">What can you genuinely influence?</p>
+          <p class="shint">At your level, what levers do you actually have? Select all that apply.</p>
+          <div class="levers" id="levers">
+            <div class="lv"><div class="lchk" data-lv="The quality of the relationship and how the person feels supported"></div><span class="llbl">The quality of the relationship and how the person feels supported</span></div>
+            <div class="lv"><div class="lchk" data-lv="How I prepare for and use supervision"></div><span class="llbl">How I prepare for and use supervision</span></div>
+            <div class="lv"><div class="lchk" data-lv="Documenting patterns and feeding them back to the organisation"></div><span class="llbl">Documenting patterns and feeding them back to the organisation</span></div>
+            <div class="lv"><div class="lchk" data-lv="Contributing community voices to advocacy or co-design processes"></div><span class="llbl">Contributing community voices to advocacy or co-design processes</span></div>
+            <div class="lv"><div class="lchk" data-lv="Naming the tier honestly with the person or community I am supporting"></div><span class="llbl">Naming the tier honestly with the person or community I am supporting</span></div>
+          </div>
+        </div>
+
+        <div class="sc">
+          <div class="snum">4</div>
+          <p class="stitle">Where does the next conversation belong?</p>
+          <p class="shint">Who needs to be part of it, and at what level?</p>
+          <textarea class="fta" id="conv" placeholder="e.g. Supervision — to name this as a funding-level issue rather than a practice gap. Separately, I want to document the pattern and bring it to the team meeting..." rows="3"></textarea>
+        </div>
+
+        <button class="gbtn" id="gbtn">Generate my Tier Check summary</button>
+      </div>
+
+      <div class="out" id="out">
+        <div class="out-lbl">Your Tier Check summary</div>
+        <div class="os"><p class="os-t">Situation</p><p class="os-c" id="o-sit"></p></div>
+        <div class="os"><p class="os-t">Where it is being produced</p><span class="otag" id="o-tier"></span><p class="os-c" id="o-tm"></p></div>
+        <div class="os" id="o-lv-sec"><p class="os-t">What you can influence from here</p><ul class="oli" id="o-lvs"></ul></div>
+        <div class="os"><p class="os-t">Where the next conversation belongs</p><p class="os-c" id="o-conv"></p></div>
+        <div class="oq"><p class="oq-l">Supervision prompt</p><p id="o-prompt"></p></div>
+        <button class="cpbtn" id="cpbtn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy to clipboard
+        </button>
+        <button class="rbtn" id="rbtn">Start a new check</button>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="wrap--n">
+    <div class="about">
+      <div class="about-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+      <div>
+        <h3>About this tool</h3>
+        <p>Part of the CASE (Critical Agency and Script Ecology) framework v0.2, developed from practice in child and family services and community development in South East Queensland. Designed for reflection and conversation — not clinical assessment or performance measurement.</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="ft">
+  <div class="wrap">
+    <div class="ft-in">
+      <p>CASE Tier Check &middot; Not for clinical or compliance use</p>
+      <p><strong>CASE v0.2</strong> &middot; Critical Agency &amp; Script Ecology</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Theme
+(function(){
+  const btn=document.querySelector('[data-tgl]'),r=document.documentElement;
+  let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+  r.setAttribute('data-theme',d);
+  const sun='<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+  const moon='<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  btn.innerHTML=d==='dark'?sun:moon;
+  btn.addEventListener('click',()=>{d=d==='dark'?'light':'dark';r.setAttribute('data-theme',d);btn.innerHTML=d==='dark'?sun:moon;btn.setAttribute('aria-label','Switch to '+(d==='dark'?'light':'dark')+' mode');});
+})();
+
+// Tabs
+document.querySelectorAll('[data-pnl]').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('[data-pnl]').forEach(x=>{x.classList.remove('on');x.setAttribute('aria-selected','false');});
+    document.querySelectorAll('.pnl').forEach(x=>x.classList.remove('on'));
+    t.classList.add('on');t.setAttribute('aria-selected','true');
+    const p=document.getElementById('pnl-'+t.dataset.pnl);if(p)p.classList.add('on');
+  });
+});
+
+// Tier accordion
+document.querySelectorAll('[data-tc]').forEach(c=>{
+  c.addEventListener('click',()=>{const was=c.classList.contains('ex');document.querySelectorAll('[data-tc]').forEach(x=>x.classList.remove('ex'));if(!was)c.classList.add('ex');});
+});
+
+// Practitioner
+let selTier=null;
+const levers=new Set();
+const tl={'1':'Practitioner / client level','2':'Organisation / service level','3':'Funding / contract level','4':'Policy / legislation level'};
+const tm={'1':'The pressure here is most likely produced within the practice relationship or the individual circumstances. This belongs to a direct practice conversation — what you can adjust, what support you need, and what capacity looks like right now.','2':'The pressure is being produced by how the organisation is structured, resourced, or operating. Your worker role cannot fully resolve this — but it can be named, documented, and raised through the right internal channels.','3':'The pressure originates in how the work is funded or contracted. Neither you nor the organisation designed these constraints. The most useful move is to separate what you own from what belongs to a funding or commissioning conversation.','4':'The pressure comes from legislative or policy conditions that sit above every level in the chain. Naming it clearly stops you from absorbing a structural cost as a personal one — and it is the foundation of advocacy over time.'};
+const tp={'1':'What in this situation actually belongs to my practice, and what would I want to think through together?','2':'What are the organisational conditions shaping this, and is this the right space to name them?','3':'If this pressure is being produced at the funding level, what is mine to carry — and what belongs to a different conversation?','4':'What would it look like to hold this situation honestly, knowing the constraint sits above everything I can reach from here?'};
+
+document.querySelectorAll('[data-ts]').forEach(b=>{
+  b.addEventListener('click',()=>{document.querySelectorAll('[data-ts]').forEach(x=>x.classList.remove('on'));b.classList.add('on');selTier=b.dataset.ts;});
+});
+
+document.querySelectorAll('[data-lv]').forEach(c=>{
+  c.addEventListener('click',()=>{const l=c.dataset.lv;if(levers.has(l)){levers.delete(l);c.classList.remove('on');}else{levers.add(l);c.classList.add('on');}});
+});
+
+document.getElementById('gbtn').addEventListener('click',()=>{
+  const sit=document.getElementById('sit').value.trim();
+  const conv=document.getElementById('conv').value.trim();
+  if(!sit){document.getElementById('sit').focus();return;}
+  if(!selTier){document.querySelector('.tier-sel').scrollIntoView({behavior:'smooth',block:'center'});return;}
+  document.getElementById('o-sit').textContent=sit||'—';
+  document.getElementById('o-tier').textContent=tl[selTier];
+  document.getElementById('o-tm').textContent=tm[selTier];
+  const ul=document.getElementById('o-lvs');ul.innerHTML='';
+  if(levers.size>0){levers.forEach(l=>{const li=document.createElement('li');li.textContent=l;ul.appendChild(li);});document.getElementById('o-lv-sec').style.display='';}
+  else{document.getElementById('o-lv-sec').style.display='none';}
+  document.getElementById('o-conv').textContent=conv||'Not specified.';
+  document.getElementById('o-prompt').textContent=tp[selTier];
+  const out=document.getElementById('out');out.classList.add('on');out.scrollIntoView({behavior:'smooth',block:'start'});
+});
+
+document.getElementById('cpbtn').addEventListener('click',()=>{
+  const sit=document.getElementById('o-sit').textContent;
+  const tier=document.getElementById('o-tier').textContent;
+  const meaning=document.getElementById('o-tm').textContent;
+  const lvs=Array.from(document.querySelectorAll('#o-lvs li')).map(l=>'- '+l.textContent).join('\n');
+  const conv=document.getElementById('o-conv').textContent;
+  const pr=document.getElementById('o-prompt').textContent;
+  const txt='CASE TIER CHECK\n\nSituation\n'+sit+'\n\nWhere produced\n'+tier+' — '+meaning+'\n\nWhat I can influence\n'+(lvs||'None selected.')+'\n\nNext conversation\n'+conv+'\n\nSupervision prompt\n"'+pr+'"';
+  navigator.clipboard.writeText(txt).then(()=>{const b=document.getElementById('cpbtn');b.textContent='Copied!';setTimeout(()=>{b.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy to clipboard';},2000);});
+});
+
+document.getElementById('rbtn').addEventListener('click',()=>{
+  document.getElementById('sit').value='';document.getElementById('conv').value='';
+  document.querySelectorAll('[data-ts]').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('[data-lv]').forEach(x=>x.classList.remove('on'));
+  levers.clear();selTier=null;
+  document.getElementById('out').classList.remove('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+</script>
+</body>
+</html>
